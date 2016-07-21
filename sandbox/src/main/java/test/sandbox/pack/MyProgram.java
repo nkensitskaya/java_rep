@@ -1,3 +1,5 @@
+package test.sandbox.pack;
+
 public class MyProgram {
 
 	public static void main(String[] args){
