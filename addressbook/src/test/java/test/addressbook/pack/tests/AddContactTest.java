@@ -7,10 +7,10 @@ public class AddContactTest extends TestBase {
 
     @Test
     public void AddContactTest() {
-        app.initNewContactCreation();
-        app.fillContactForm(new ContactData("test@email.com", "123123123", "test", "mr", "test", "test", "test", "test"));
-        app.submitNewContact();
-        app.returnToContactList();
+        app.getContactHelper().initNewContactCreation();
+        app.getContactHelper().fillContactForm(new ContactData("test@email.com", "123123123", "test", "mr", "test", "test", "test", "test"));
+        app.getContactHelper().submitNewContact();
+        app.getContactHelper().returnToContactList();
     }
 
 }
