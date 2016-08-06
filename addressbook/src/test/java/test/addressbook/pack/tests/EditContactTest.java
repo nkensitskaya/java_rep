@@ -10,7 +10,7 @@ public class EditContactTest extends TestBase{
 
         app.getNavigationHelper().gotoHomePage();
         app.getContactHelper().editContact();
-        app.getContactHelper().fillContactForm(new ContactData("test_edit@email.com", "123123123", "test_edit", "mr", "test_edit", "test_edit", "test_edit", "test_edit"));
+        app.getContactHelper().fillContactForm(new ContactData("test_edit@email.com", "123123123", "test_edit", "mr", "test_edit", "test_edit", "test_edit", "test_edit", null),false);
         app.getContactHelper().submitUpdate();
         app.getContactHelper().returnToContactList();
     }
