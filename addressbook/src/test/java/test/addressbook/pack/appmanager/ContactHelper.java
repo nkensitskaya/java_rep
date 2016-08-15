@@ -3,10 +3,14 @@ package test.addressbook.pack.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import test.addressbook.pack.model.ContactData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactHelper extends HelperBase {
 
@@ -61,5 +65,19 @@ public class ContactHelper extends HelperBase {
         fillContactForm((contact),true);
         submitNewContact();
         returnToContactList();
+    }
+
+    public List<ContactData> getContactsList() {
+        List<ContactData> contacts = new ArrayList<ContactData>();
+        List<WebElement> elements = wd.findElements(By.xpath("//tr[@name='entry']"));
+        for (WebElement element : elements) {
+            String firstName = element.findElement(By.xpath("//tr/td[3]")).getText();
+            String lastName = element.findElement(By.xpath("//tr/td[2]")).getText();
+            String address = element.findElement(By.xpath("//tr/td[4]")).getText();
+            String email = element.findElement(By.xpath("//tr/td[5]")).getText();
+            ContactData contact = new ContactData(email,null,address,null,firstName,null,lastName,null,null);
+            contacts.add(contact);
+        }
+        return contacts;
     }
 }
