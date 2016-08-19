@@ -3,20 +3,18 @@ package test.addressbook.pack.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import test.addressbook.pack.model.ContactData;
-import test.addressbook.pack.model.GroupData;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 
 public class AddContactTest extends TestBase {
 
     @Test
     public void AddContactTest() {
-        List<ContactData> contactsBefore = app.getContactHelper().getContactsList();
-        ContactData contact = new ContactData("test2@email.com", "123123123", "test2", "mr2", "test2", "test2", "test2", "test2", "test2");
-        app.getContactHelper().createNewContact(contact);
-        List<ContactData> contactsAfter = app.getContactHelper().getContactsList();
+        List<ContactData> contactsBefore = app.contact().list();
+        ContactData contact = new ContactData("test2@email.com", "123123123", "test2", "mr2", "test2", "test2", "test2", "test2",  "test2");
+        app.contact().create(contact);
+        List<ContactData> contactsAfter = app.contact().list();
 
         Assert.assertEquals(contactsAfter.size(),contactsBefore.size()+1);
 

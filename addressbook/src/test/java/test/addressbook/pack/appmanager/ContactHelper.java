@@ -1,10 +1,8 @@
 package test.addressbook.pack.appmanager;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import test.addressbook.pack.model.ContactData;
@@ -26,7 +24,7 @@ public class ContactHelper extends HelperBase {
         click(By.xpath("//div[@id='content']/form/input[21]"));
     }
 
-    public void fillContactForm(ContactData contactData, boolean creation) {
+    public void fillForm(ContactData contactData, boolean creation) {
         type(By.name("firstname"),contactData.getFirstName());
         type(By.name("middlename"),contactData.getMiddleName());
         type(By.name("lastname"),contactData.getLastName());
@@ -42,12 +40,15 @@ public class ContactHelper extends HelperBase {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
     }
+    public void selectContact(int index) {
+        wd.findElements(By.name("selected[]")).get(index).click();
+    }
 
     public void initNewContactCreation() {
         click(By.linkText("add new"));
     }
 
-    public void editContact(int index) {
+    public void edit(int index) {
         wd.findElements(By.xpath("//tr/td[8]")).get(index).click();
     }
 
@@ -55,19 +56,43 @@ public class ContactHelper extends HelperBase {
         click(By.name("update"));
     }
 
-    public void deleteContact() {
+    public void deleteSelectedContactContact() {
         click(By.xpath("//div[@id='content']/form[2]/div[2]/input"));
     }
 
-    public void createNewContact(ContactData contact) {
+    public void deleteContact(int index) {
+        selectContact(index);
+        deleteSelectedContact();
+        popupConfirm();
+        goHome();
+    }
+
+    private void popupConfirm(){
+        wd.switchTo().alert().accept();
+    }
+
+    private void deleteSelectedContact() {
+        click(By.xpath("//div[@id='content']/form[2]/div[2]/input"));
+    }
+
+    public void goHome() {
+
+        if (isElementPresent(By.id("maintable"))) {
+            return;
+        } else {
+            wd.findElement(By.linkText("home")).click();
+        }
+    }
+
+    public void create(ContactData contact) {
 
         initNewContactCreation();
-        fillContactForm((contact),true);
+        fillForm((contact),true);
         submitNewContact();
         returnToContactList();
     }
 
-    public List<ContactData> getContactsList() {
+    public List<ContactData> list() {
         List<ContactData> contacts = new ArrayList<ContactData>();
         List<WebElement> elements = wd.findElements(By.xpath("//tr[@name='entry']"));
         for (WebElement element : elements) {
