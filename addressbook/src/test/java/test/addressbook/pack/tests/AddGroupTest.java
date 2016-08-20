@@ -14,7 +14,7 @@ public class AddGroupTest extends TestBase {
 
         app.goTo().groupPage();
         List<GroupData> beforeList = app.group().list();
-        GroupData group = new GroupData("test2", "test2", "test2");
+        GroupData group = new GroupData().withName("test2").withFooter("test2").withHeader("test2");
         app.group().create(group);
         List<GroupData> afterList = app.group().list();
 
@@ -22,7 +22,7 @@ public class AddGroupTest extends TestBase {
 
         int max = afterList.stream().max(((o1, o2) -> Integer.compare(o1.getId(),o2.getId()))).get().getId();
         beforeList.add(group);
-        group.setId(max);
+        group.withId(max);
 
         Comparator<? super GroupData> byId = (gr1, gr2) -> Integer.compare(gr1.getId(),gr2.getId());
         beforeList.sort(byId);

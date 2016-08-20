@@ -2,45 +2,70 @@ package test.addressbook.pack.model;
 
 public class ContactData {
     private int id;
-    private final String email;
-    private final String phoneHome;
-    private final String address;
-    private final String title;
-    private final String firstName;
-    private final String middleName;
-    private final String lastName;
-    private final String nickname;
+    private String email;
+    private String phoneHome;
+    private String address;
+    private String title;
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private String nickname;
     private String group;
 
-    public ContactData(String email, String phoneHome, String address, String title, String firstName, String middleName, String lastName, String nickname, String group) {
-        this.id = 0;
-        this.email = email;
-        this.phoneHome = phoneHome;
-        this.address = address;
-        this.title = title;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.nickname = nickname;
-        this.group = group;
+    public ContactData withId(int id) {
+        this.id = id;
+        return this;
     }
 
-    public ContactData(int id, String email, String phoneHome, String address, String title, String firstName, String middleName, String lastName, String nickname, String group) {
-        this.id = id;
+    public ContactData withEmail(String email) {
         this.email = email;
+        return this;
+    }
+
+    public ContactData withPhoneHome(String phoneHome) {
         this.phoneHome = phoneHome;
+        return this;
+    }
+
+    public ContactData withAddress(String address) {
         this.address = address;
+        return this;
+    }
+
+    public ContactData withTitle(String title) {
         this.title = title;
+        return this;
+    }
+
+    public ContactData withFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
+    }
+
+    public ContactData withMiddleName(String middleName) {
         this.middleName = middleName;
+        return this;
+    }
+
+    public ContactData withLastName(String lastName) {
         this.lastName = lastName;
+        return this;
+    }
+
+    public ContactData withNickname(String nickname) {
         this.nickname = nickname;
+        return this;
+    }
+
+    public ContactData withGroup(String group) {
         this.group = group;
+        return this;
     }
 
     public int getId() {
         return id;
     }
+
     public String getEmail() {
         return email;
     }
@@ -113,7 +138,4 @@ public class ContactData {
         return result;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 }
