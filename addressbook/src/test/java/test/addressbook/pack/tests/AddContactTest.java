@@ -3,16 +3,17 @@ package test.addressbook.pack.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import test.addressbook.pack.model.ContactData;
+import test.addressbook.pack.model.Contacts;
 
-import java.util.Comparator;
-import java.util.List;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
 
 public class AddContactTest extends TestBase {
 
     @Test
     public void AddContactTest() {
-        List<ContactData> contactsBefore = app.contact().list();
-        //ContactData contact = new ContactData("test2@email.com", "123123123", "test2", "mr2", "test2", "test2", "test2", "test2",  "test2");
+        Contacts contactsBefore = app.contact().all();
         ContactData contact = new ContactData()
                 .withEmail("test2@email.com")
                 .withPhoneHome("123123123")
@@ -22,20 +23,13 @@ public class AddContactTest extends TestBase {
                 .withMiddleName("test2")
                 .withLastName("test2")
                 .withNickname("test2")
-                .withGroup("test1");
+                .withGroup("test2");
         app.contact().create(contact);
-        List<ContactData> contactsAfter = app.contact().list();
+        Contacts contactsAfter = app.contact().all();
 
-        Assert.assertEquals(contactsAfter.size(),contactsBefore.size()+1);
+        assertEquals(contactsAfter.size(),contactsBefore.size()+1);
+        assertThat(contactsAfter, equalTo(contactsBefore.withAdded(contact.withId(contactsAfter.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
 
-        int max = contactsAfter.stream().max(((o1, o2) -> Integer.compare(o1.getId(),o2.getId()))).get().getId();
-        contactsBefore.add(contact);
-        contact.withId(max);
-
-        Comparator<? super ContactData> byId  = (gr1, gr2) -> Integer.compare(gr1.getId(),gr2.getId());
-        contactsBefore.sort(byId);
-        contactsAfter.sort(byId);
-        Assert.assertEquals(contactsAfter,contactsBefore);
     }
 
 }

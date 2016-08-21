@@ -4,8 +4,14 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import test.addressbook.pack.model.GroupData;
+import test.addressbook.pack.model.Groups;
 
 import java.util.List;
+import java.util.Set;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
 
 public class DeleteGroupTest extends TestBase{
 
@@ -19,15 +25,14 @@ public class DeleteGroupTest extends TestBase{
 
     @Test
     public void testDeleteGroup() {
-        List<GroupData> beforeList = app.group().list();
-        int index = beforeList.size()-1;
-        app.group().delete(index);
-        List<GroupData> afterList = app.group().list();
+        Groups beforeList = app.group().all();
+        GroupData deletedGroup = beforeList.iterator().next();
+        app.group().delete(deletedGroup);
+        Groups afterList = app.group().all();
 
-        Assert.assertEquals(afterList.size(),beforeList.size()-1);
+        assertEquals(afterList.size(),beforeList.size()-1);
+        assertThat(afterList, equalTo(beforeList.without(deletedGroup)));
 
-        beforeList.remove(index);
-        Assert.assertEquals(afterList,beforeList);
     }
 
 }

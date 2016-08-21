@@ -4,9 +4,15 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import test.addressbook.pack.model.GroupData;
+import test.addressbook.pack.model.Groups;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
 
 public class EditGroupTest extends TestBase{
 
@@ -20,19 +26,14 @@ public class EditGroupTest extends TestBase{
 
     @Test
     public void testEditGroup() {
-        List<GroupData> groupsBefore = app.group().list();
-        int index = groupsBefore.size()-1;
-        GroupData group = new GroupData().withId(groupsBefore.get(index).getId()).withName("test_edited").withHeader("test1").withFooter("test_edited");
-        app.group().edit(index, group);
-        List<GroupData> groupsAfter = app.group().list();
-        Assert.assertEquals(groupsAfter.size(),groupsBefore.size());
+        Groups groupsBefore = app.group().all();
+        GroupData editGroup = groupsBefore.iterator().next();
+        GroupData group = new GroupData().withId(editGroup.getId()).withName("test_edited").withHeader("test1").withFooter("test_edited");
+        app.group().edit(group);
+        Groups groupsAfter = app.group().all();
 
-        groupsBefore.remove(index);
-        groupsBefore.add(group);
-        Comparator<? super GroupData> byId = (gr1, gr2) -> Integer.compare(gr1.getId(),gr2.getId());
-        groupsBefore.sort(byId);
-        groupsAfter.sort(byId);
-        Assert.assertEquals(groupsAfter,groupsBefore);
+        assertEquals(groupsAfter.size(),groupsBefore.size());
+        assertThat(groupsAfter, equalTo(groupsBefore.without(editGroup).withAdded(group)));
     }
 
 }
