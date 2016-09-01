@@ -25,9 +25,10 @@ public class AddContactTest extends TestBase {
                 .withNickname("test2")
                 .withGroup("test2");
         app.contact().create(contact);
+        assertEquals(app.group().count(),contactsBefore.size()+1);
         Contacts contactsAfter = app.contact().all();
 
-        assertEquals(contactsAfter.size(),contactsBefore.size()+1);
+//        assertEquals(contactsAfter.size(),contactsBefore.size()+1);
         assertThat(contactsAfter, equalTo(contactsBefore.withAdded(contact.withId(contactsAfter.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
 
     }

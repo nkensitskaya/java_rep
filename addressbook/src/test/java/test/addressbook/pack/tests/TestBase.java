@@ -7,6 +7,7 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import test.addressbook.pack.appmanager.ApplicationManager;
+import test.addressbook.pack.model.ContactData;
 
 public class TestBase {
 

@@ -39,7 +39,6 @@ public class EditContactTest extends TestBase{
     public void testEditContact() {
         Contacts contactsBefore = app.contact().all();
         ContactData editContact = contactsBefore.iterator().next();
-        int index = 1;
         ContactData contact = new ContactData()
                 .withId(editContact.getId())
                 .withEmail("test_edit@email.com")
@@ -50,14 +49,13 @@ public class EditContactTest extends TestBase{
                 .withMiddleName("test_edit")
                 .withLastName("test_edit")
                 .withNickname("test_edit");
-        app.contact().edit(contact.getId());
-        app.contact().fillForm(contact,false);
-        app.contact().submitUpdate();
-        app.contact().returnToContactList();
+        app.contact().editContact(contact);
+        assertEquals(app.group().count(),contactsBefore.size());
         Contacts contactsAfter = app.contact().all();
 
-        assertEquals(contactsAfter.size(),contactsBefore.size());
+//        assertEquals(contactsAfter.size(),contactsBefore.size());
         assertThat(contactsAfter, equalTo(contactsBefore.withAdded(contact).without(editContact)));
 
     }
+
 }

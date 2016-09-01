@@ -15,9 +15,10 @@ public class AddGroupTest extends TestBase {
         Groups beforeList = app.group().all();
         GroupData group = new GroupData().withName("test2").withFooter("test2").withHeader("test2");
         app.group().create(group);
+        assertThat(app.group().count(), equalTo(beforeList.size()+1));
         Groups afterList = app.group().all();
 
-        assertThat(afterList.size(), equalTo(beforeList.size()+1));
+//        assertThat(afterList.size(), equalTo(beforeList.size()+1));
         assertThat(afterList, equalTo(beforeList.withAdded(group.withId(afterList.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
     }
 
