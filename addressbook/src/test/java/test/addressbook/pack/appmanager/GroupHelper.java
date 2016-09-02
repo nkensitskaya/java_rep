@@ -56,7 +56,7 @@ public class GroupHelper extends HelperBase {
     }
 
     public void openForEditGroup() {
-        click(By.name("edit"));
+        click(By.name("editById"));
     }
 
     public void updateGroup() {

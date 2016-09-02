@@ -1,15 +1,9 @@
 package test.addressbook.pack.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import test.addressbook.pack.model.ContactData;
 import test.addressbook.pack.model.Contacts;
-import test.addressbook.pack.model.GroupData;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;

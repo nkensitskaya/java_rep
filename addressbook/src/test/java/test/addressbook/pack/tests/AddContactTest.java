@@ -1,6 +1,5 @@
 package test.addressbook.pack.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import test.addressbook.pack.model.ContactData;
 import test.addressbook.pack.model.Contacts;
