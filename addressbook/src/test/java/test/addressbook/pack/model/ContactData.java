@@ -1,6 +1,11 @@
 package test.addressbook.pack.model;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
+@XStreamAlias("Contact")
 public class ContactData {
+    @XStreamOmitField
     private int id;
     private String email;
     private String email2;
