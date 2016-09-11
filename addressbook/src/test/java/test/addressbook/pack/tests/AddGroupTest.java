@@ -22,7 +22,7 @@ public class AddGroupTest extends TestBase {
     @DataProvider
     public Iterator<Object[]> validGroupsfromXML() throws IOException {
         List<Object[]> list = new ArrayList<Object[]>();
-        BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.xml")));
+        try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.xml")))) {
         String line = reader.readLine();
         String xml = "";
         while (line != null) {
@@ -32,13 +32,13 @@ public class AddGroupTest extends TestBase {
         XStream sxtream = new XStream();
         sxtream.processAnnotations(GroupData.class);
         List<GroupData> groups = (List<GroupData>) sxtream.fromXML(xml);
-        return groups.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();
+        return groups.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();}
     }
 
     @DataProvider
     public Iterator<Object[]> validGroupsfromJson() throws IOException {
         List<Object[]> list = new ArrayList<Object[]>();
-        BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.json")));
+        try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.json")))) {
         String line = reader.readLine();
         String json = "";
         while (line != null) {
@@ -47,7 +47,7 @@ public class AddGroupTest extends TestBase {
         }
         Gson gson = new Gson();
         List<GroupData> groups = gson.fromJson(json, new TypeToken<List<GroupData>>(){}.getType());
-        return groups.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();
+        return groups.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();}
     }
 
     @Test (dataProvider = "validGroupsfromJson")
@@ -55,7 +55,6 @@ public class AddGroupTest extends TestBase {
 
         app.goTo().groupPage();
         Groups beforeList = app.group().all();
-        //GroupData group = new GroupData().withName("test2").withFooter("test2").withHeader("test2");
         app.group().create(group);
         assertThat(app.group().count(), equalTo(beforeList.size()+1));
         Groups afterList = app.group().all();

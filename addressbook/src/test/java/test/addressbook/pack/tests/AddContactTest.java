@@ -27,7 +27,7 @@ public class AddContactTest extends TestBase {
     @DataProvider
     public Iterator<Object[]> validContactsFromXML() throws IOException {
         List<Object[]> list = new ArrayList<Object[]>();
-        BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.xml")));
+        try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.xml")))) {
         String line = reader.readLine();
         String xml = "";
         while (line != null) {
@@ -37,13 +37,13 @@ public class AddContactTest extends TestBase {
         XStream sxtream = new XStream();
         sxtream.processAnnotations(ContactData.class);
         List<ContactData> contacts = (List<ContactData>) sxtream.fromXML(xml);
-        return contacts.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();
+        return contacts.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();}
     }
 
     @DataProvider
     public Iterator<Object[]> validContactsFromJson() throws IOException {
         List<Object[]> list = new ArrayList<Object[]>();
-        BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.json")));
+        try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.json")))) {
         String line = reader.readLine();
         String json = "";
         while (line != null) {
@@ -52,27 +52,16 @@ public class AddContactTest extends TestBase {
         }
         Gson gson = new Gson();
         List<ContactData> contacts = gson.fromJson(json, new TypeToken<List<ContactData>>(){}.getType());
-        return contacts.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();
+        return contacts.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator(); }
     }
 
     @Test(dataProvider = "validContactsFromJson")
     public void AddContactTest(ContactData contact) {
         Contacts contactsBefore = app.contact().all();
-        /*ContactData contact = new ContactData()
-                .withEmail("test2@email.com")
-                .withPhoneHome("123123123")
-                .withAddress("test2")
-                .withTitle("mr2")
-                .withFirstName("test2")
-                .withMiddleName("test2")
-                .withLastName("test2")
-                .withNickname("test2")
-                .withGroup("test2");*/
         app.contact().create(contact);
         assertEquals(app.group().count(),contactsBefore.size()+1);
         Contacts contactsAfter = app.contact().all();
 
-//        assertEquals(contactsAfter.size(),contactsBefore.size()+1);
         assertThat(contactsAfter, equalTo(contactsBefore.withAdded(contact.withId(contactsAfter.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
 
     }
