@@ -3,6 +3,8 @@ package test.addressbook.pack.tests;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thoughtworks.xstream.XStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import test.addressbook.pack.model.ContactData;
@@ -23,6 +25,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.Assert.assertEquals;
 
 public class AddContactTest extends TestBase {
+
 
     @DataProvider
     public Iterator<Object[]> validContactsFromXML() throws IOException {
@@ -57,11 +60,11 @@ public class AddContactTest extends TestBase {
 
     @Test(dataProvider = "validContactsFromJson")
     public void AddContactTest(ContactData contact) {
+
         Contacts contactsBefore = app.contact().all();
         app.contact().create(contact);
         assertEquals(app.group().count(),contactsBefore.size()+1);
         Contacts contactsAfter = app.contact().all();
-
         assertThat(contactsAfter, equalTo(contactsBefore.withAdded(contact.withId(contactsAfter.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
 
     }
