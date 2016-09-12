@@ -13,22 +13,22 @@ public class EditGroupTest extends TestBase{
 
     @BeforeMethod
     public void precondition() {
-        app.goTo().groupPage();
-        if (app.group().list().size() == 0) {
+        if (app.db().groups().size() == 0) {
+            app.goTo().groupPage();
             app.group().create(new GroupData().withName("test1"));
         }
     }
 
     @Test
     public void testEditGroup() {
-        Groups groupsBefore = app.group().all();
+        Groups groupsBefore = app.db().groups();
         GroupData editGroup = groupsBefore.iterator().next();
         GroupData group = new GroupData().withId(editGroup.getId()).withName("test_edited").withHeader("test1").withFooter("test_edited");
+        app.goTo().groupPage();
         app.group().edit(group);
         assertEquals(app.group().count(),groupsBefore.size());
-        Groups groupsAfter = app.group().all();
+        Groups groupsAfter = app.db().groups();
 
-//        assertEquals(groupsAfter.size(),groupsBefore.size());
         assertThat(groupsAfter, equalTo(groupsBefore.without(editGroup).withAdded(group)));
     }
 
