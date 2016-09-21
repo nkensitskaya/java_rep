@@ -1,20 +1,24 @@
 package test.addressbook.pack.tests;
 
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import test.addressbook.pack.model.ContactData;
 import test.addressbook.pack.model.Contacts;
+import test.addressbook.pack.model.GroupData;
+import test.addressbook.pack.model.Groups;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
 
-public class DeleteContactTest extends TestBase {
+public class AddContactToGroupTest extends TestBase {
 
     @BeforeMethod
     public void precondition() {
-        app.goTo().goHome();
+
         if (app.db().contacts().size() == 0) {
+            app.goTo().goHome();
             app.contact().create(new ContactData()
                     .withEmail("test@email.com")
                     .withPhoneHome("123123123")
@@ -24,21 +28,23 @@ public class DeleteContactTest extends TestBase {
                     .withMiddleName("test")
                     .withLastName("test")
                     .withNickname("test"));
-                    //.withGroup("test2"));
         }
+        if (app.db().groups().size() == 0) {
+            app.goTo().groupPage();
+            app.group().create(new GroupData().withName("test1"));
+        }
+
     }
+
 
     @Test
-    public void testDeleteContact(){
+    public void testAddContactToGroup() {
+        app.goTo().goHome();
+        ContactData selectedContact = app.db().contacts().iterator().next();
+        GroupData selectedGroup = app.db().groups().iterator().next();
+        app.contact().addToGroup(selectedContact,selectedGroup);
 
-        Contacts contactsBefore = app.db().contacts();
-        ContactData deletedContact = contactsBefore.iterator().next();
-        app.contact().deleteContact(deletedContact);
-        assertEquals(app.group().count(),contactsBefore.size()-1);
-        Contacts contactsAfter = app.db().contacts();
+        assertTrue(selectedContact.getGroups().isIdExists(selectedGroup.getId()));
 
-        assertThat(contactsAfter, equalTo(contactsBefore.without(deletedContact)));
-        verifyContactListInUI();
     }
-
 }

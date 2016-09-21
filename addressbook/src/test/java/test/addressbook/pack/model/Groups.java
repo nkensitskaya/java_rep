@@ -2,10 +2,7 @@ package test.addressbook.pack.model;
 
 import com.google.common.collect.ForwardingSet;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Groups extends ForwardingSet<GroupData> {
 
@@ -39,5 +36,19 @@ public class Groups extends ForwardingSet<GroupData> {
         Groups groups = new Groups(this);
         groups.remove(group);
         return groups;
+    }
+
+    public Boolean isIdExists(Integer groupId) {
+        Groups groups = new Groups(this);
+        boolean isIdExists = false;
+
+        Iterator<GroupData> iterator = groups.delegate.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getId() == groupId) {
+                isIdExists = true;
+                break;
+            }
+        }
+        return isIdExists;
     }
 }

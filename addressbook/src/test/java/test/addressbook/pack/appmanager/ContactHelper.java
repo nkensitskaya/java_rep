@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import test.addressbook.pack.model.ContactData;
 import test.addressbook.pack.model.Contacts;
+import test.addressbook.pack.model.GroupData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +91,13 @@ public class ContactHelper extends HelperBase {
         deleteSelectedContact();
         popupConfirm();
         contactsCache = null;
+        goHome();
+    }
+
+    public void addToGroup(ContactData contact, GroupData group) {
+        selectContactById(contact.getId());
+        new Select(wd.findElement(By.name("to_group"))).selectByValue(String.valueOf(group.getId()));
+        click(By.name("add"));
         goHome();
     }
 
@@ -200,4 +208,10 @@ public class ContactHelper extends HelperBase {
         return info;
     }
 
+    public void removeFromGroup(ContactData contact, GroupData group) {
+        new Select(wd.findElement(By.name("group"))).selectByValue(String.valueOf(group.getId()));
+        selectContactById(contact.getId());
+        click(By.name("remove"));
+        goHome();
+    }
 }

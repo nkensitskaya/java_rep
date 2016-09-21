@@ -60,6 +60,7 @@ public class AddGroupTest extends TestBase {
         Groups afterList = app.db().groups();
 
         assertThat(afterList, equalTo(beforeList.withAdded(group.withId(afterList.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
+        verifyGroupListInUI();
     }
 
 }

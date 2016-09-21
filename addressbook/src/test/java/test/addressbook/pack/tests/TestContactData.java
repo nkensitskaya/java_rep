@@ -24,8 +24,9 @@ public class TestContactData extends TestBase{
                     .withFirstName("test")
                     .withMiddleName("test")
                     .withLastName("test")
-                    .withNickname("test")
-                    .withGroup("test2"));        }
+                    .withNickname("test"));
+                    //.withGroup("test2"));
+        }
     }
     @Test
     public void testContactPhones() {

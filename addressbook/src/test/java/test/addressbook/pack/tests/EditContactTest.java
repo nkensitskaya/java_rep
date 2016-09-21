@@ -23,8 +23,8 @@ public class EditContactTest extends TestBase{
                     .withFirstName("test")
                     .withMiddleName("test")
                     .withLastName("test")
-                    .withNickname("test")
-                    .withGroup("test2"));
+                    .withNickname("test"));
+                    //.withGroup("test2"));
         }
 
     }
@@ -48,7 +48,7 @@ public class EditContactTest extends TestBase{
         Contacts contactsAfter = app.db().contacts();
 
         assertThat(contactsAfter, equalTo(contactsBefore.withAdded(contact).without(editContact)));
-
+        verifyContactListInUI();
     }
 
 }
